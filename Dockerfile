@@ -12,6 +12,11 @@ RUN apt install -y xfce4 xfce4-goodies
 
 # install dependencies
 RUN apt install -y \
+  sudo \
+  gnupg \
+  apt-transport-https \
+  ca-certificates \
+  software-properties-common \
   tightvncserver \
   novnc \
   net-tools \
@@ -23,7 +28,19 @@ RUN apt install -y \
   firefox \
   git \
   python3 \
-  python3-pip
+  python3-pip\
+  nano \
+  xterm 
+
+
+# Add Gazebo repository
+RUN sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
+RUN wget http://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
+RUN apt update
+
+# Install Gazebo
+RUN apt-get install -y gazebo11 libgazebo11-dev
+
 
 # xfce fixes
 RUN update-alternatives --set x-terminal-emulator /usr/bin/xfce4-terminal.wrapper
